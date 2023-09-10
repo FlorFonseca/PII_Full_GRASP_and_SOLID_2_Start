@@ -6,14 +6,17 @@
 
 using System;
 using System.Collections;
+using System.Runtime.InteropServices;
 
 namespace Full_GRASP_And_SOLID.Library
 {
     public class Recipe
     {
-        private ArrayList steps = new ArrayList();
+        public ArrayList steps = new ArrayList();
 
         public Product FinalProduct { get; set; }
+
+        public double CostoTotal {get; set;}
 
         public void AddStep(Step step)
         {
@@ -25,7 +28,7 @@ namespace Full_GRASP_And_SOLID.Library
             this.steps.Remove(step);
         }
 
-        public void PrintRecipe()
+        /*public void PrintRecipe()
         {
             Console.WriteLine($"Receta de {this.FinalProduct.Description}:");
             foreach (Step step in this.steps)
@@ -33,6 +36,20 @@ namespace Full_GRASP_And_SOLID.Library
                 Console.WriteLine($"{step.Quantity} de '{step.Input.Description}' " +
                     $"usando '{step.Equipment.Description}' durante {step.Time}");
             }
+        }
+        */
+        public void GetProductionCost()                                            
+        {
+            double SumaCostosIng=0;
+            double SumaCostosEquip=0;
+            
+            foreach (Step step in this.steps)
+            {
+                SumaCostosIng=+ step.Input.UnitCost*step.Quantity;
+                SumaCostosEquip=+ (step.Time/60)*step.Equipment.HourlyCost;
+            }
+            this.CostoTotal= SumaCostosEquip+SumaCostosIng;
+            
         }
     }
 }
